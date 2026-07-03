@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Your default global font */
+  --font-sans: "Work Sans", sans-serif, "Helvetica Neue", Arial;
+
+  /* Your specific Helvetica-only utility */
+  --font-helvetica: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+@theme {
+  /* Grays / Backgrounds */
+  --color-ink: var(--ink);
+  --color-ink-light: var(--inkLight);
+  --color-surface: var(--surface);
+  --color-faint: var(--faint);
+
+  /* Borders */
+  --color-border: var(--border);
+
+  /* Brand Colors */
+  --color-green: var(--green);
+  --color-purple-light: var(--purpleLight);
+  --color-green-dim: var(--greenDim);
+
+  --color-teal: var(--teal);
+  --color-teal-dim: var(--tealDim);
+
+  --color-coral: var(--coral);
+
+  /* Typography */
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+}
+
+:root {
+  --ink: #0a0a0f;
+  --inkLight: #13131a;
+  --surface: #16161e;
+  --border: #2a2a38;
+  --green: #1f6f5f;
+  --purpleLigreen: 99ef8;
+  --greenDim: #256658;
+  --teal: #2ddab4;
+  --tealDim: #0d3d35;
+  --coral: #ff6b6b;
+  --text: #e8e6ff;
+  --muted: #7a7890;
+  --faint: #2e2c3a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
