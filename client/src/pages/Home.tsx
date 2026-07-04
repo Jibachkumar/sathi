@@ -12,14 +12,6 @@ import {
   ShieldCheck,
   TrendingUp,
   ArrowUpRight,
-  Code2,
-  Landmark,
-  HardHat,
-  Factory,
-  ShoppingBag,
-  UtensilsCrossed,
-  Stethoscope,
-  HeartHandshake,
   ArrowLeft,
   ArrowRight,
   RefreshCw,
@@ -98,7 +90,7 @@ const modules = [
     title: "Performance",
     icon: TrendingUp,
     description:
-      "Set goals, run reviews, and track promotions without a single spreadsheet.",
+      "Set goals, run reviews, and track promotions without button single spreadsheet.",
     href: "#",
   },
 ];
@@ -108,57 +100,57 @@ const industries = [
     title: "IT & Software",
     description:
       "Manage remote and hybrid teams, contractor payments, and performance reviews from one dashboard.",
-    icon: Code2,
-    gradient: "from-teal-800 to-green-dim",
+    img: " https://res.cloudinary.com/dhadohg2h/image/upload/v1783158120/it_and_software_bs6zdk.png",
+    alt: "it and software",
   },
   {
     title: "Finance & Banking",
     description:
       "Branch-wise reporting, strict SSF/CIT compliance, and role-based access built for regulated teams.",
-    icon: Landmark,
-    gradient: "from-green-dim to-teal-600",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158351/bank_fqj925.png",
+    alt: "finance",
   },
   {
     title: "Construction & Real Estate",
     description:
       "Site-wise attendance and daily-wage payroll for contract labor, with high-turnover workforces in mind.",
-    icon: HardHat,
-    gradient: "from-teal-700 to-teal-500",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158406/construction_and_real_state_qr9qu2.avif",
+    alt: "contruction",
   },
   {
     title: "Manufacturing",
     description:
       "Shift management, overtime-heavy payroll, and face recognition attendance built for the factory floor.",
-    icon: Factory,
-    gradient: "from-teal-900 to-teal-600",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158469/manufacturing_weppmz.jpg",
+    alt: "manufacturing",
   },
   {
     title: "Retail & Trading",
     description:
       "Multi-branch operations, commission-based pay, and easy onboarding for part-time and seasonal staff.",
-    icon: ShoppingBag,
-    gradient: "from-green-dim to-mint-500",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158517/retail_and_trading_uyk0rz.png",
+    alt: "retail",
   },
   {
     title: "Hospitality",
     description:
       "Shift scheduling, service charge distribution, and fast hiring workflows for seasonal demand.",
-    icon: UtensilsCrossed,
-    gradient: "from-teal-700 to-green-dim",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158556/hospitality_jre8ho.jpg",
+    alt: "Hospitality",
   },
   {
     title: "Healthcare",
     description:
       "24/7 shift rotations, credential tracking, and on-call pay for hospitals and clinics.",
-    icon: Stethoscope,
-    gradient: "from-teal-800 to-teal-500",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158606/healthcare_jiwr4z.jpg",
+    alt: "helathcare",
   },
   {
     title: "NGOs & INGOs",
     description:
       "Donor and grant-based reporting, project-wise cost allocation, and mixed expat/local payroll.",
-    icon: HeartHandshake,
-    gradient: "from-green-dim to-teal-700",
+    img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158646/NGO_INGOs_taplak.jpg",
+    alt: "NGO",
   },
 ];
 
@@ -184,12 +176,42 @@ const valueProps = [
 ];
 
 const spokes = [
-  { icon: Users, x: 12, y: 15, side: "left" },
-  { icon: Wallet, x: 12, y: 50, side: "left" },
-  { icon: Fingerprint, x: 12, y: 85, side: "left" },
-  { icon: ShieldCheck, x: 92, y: 15, side: "right" },
-  { icon: TrendingUp, x: 92, y: 50, side: "right" },
-  { icon: Sparkles, x: 92, y: 85, side: "right" },
+  {
+    icon: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783194664/user_icon_ysn90s.png",
+    x: 12,
+    y: 15,
+    side: "left",
+  },
+  {
+    icon: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783194728/payroll_icon_ezpg3g.png",
+    x: 12,
+    y: 50,
+    side: "left",
+  },
+  {
+    icon: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783194761/attendance_icon_fuexnu.png",
+    x: 12,
+    y: 85,
+    side: "left",
+  },
+  {
+    icon: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783194800/compliance_icon_qq2ni0.png",
+    x: 92,
+    y: 15,
+    side: "right",
+  },
+  {
+    icon: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783194836/performance_icon_oznvqi.png",
+    x: 92,
+    y: 50,
+    side: "right",
+  },
+  {
+    icon: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783194874/ai_logo_ublkpp.png",
+    x: 92,
+    y: 85,
+    side: "right",
+  },
 ];
 
 const hubX = 50;
@@ -209,12 +231,17 @@ function buildPath(spoke: { x: number; y: number; side: string }) {
 function Home() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
 
   const handleScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
-    setProgress(max === 0 ? 0 : el.scrollLeft / max);
+    const ratio = max === 0 ? 0 : el.scrollLeft / max;
+    setProgress(ratio);
+    setAtStart(ratio <= 0.02);
+    setAtEnd(ratio >= 0.98);
   };
 
   const scrollByCard = (dir: 1 | -1) => {
@@ -247,7 +274,7 @@ function Home() {
   return (
     <div>
       {/* info section */}
-      <div className="relative h-[700px] overflow-hidden bg-gradient-to-b from-[#4A8C7D] via-[#2e7262] to-[#126351]">
+      <div className="relative md:h-[700px] md:pb-0 pb-2 overflow-hidden bg-gradient-to-b from-[#4A8C7D] via-[#2e7262] to-[#126351]">
         {/* Single Wave */}
         <svg
           className="absolute -bottom-15 left-0 w-full h-[320px]"
@@ -283,7 +310,7 @@ function Home() {
         </div>
 
         {/* Cards */}
-        <div className="relative z-20 mt-14 flex justify-center gap-4 px-6 flex-wrap">
+        <div className="relative z-20 mt-14 flex justify-center md:gap-4 md:px-6 gap-2 px-2 flex-wrap">
           {cards.map((card, index) => {
             const Icon = card.icon;
 
@@ -308,8 +335,8 @@ function Home() {
       </div>
 
       {/* overview section  */}
-      <div className="relative -mt-14">
-        <h1 className="font-semibold text-3xl lg:w-[600px] w-full mx-auto text-center text-green-dim">
+      <div className="relative lg:-mt-14 md:mt-0 mt-4">
+        <h1 className="font-semibold text-3xl lg:w-[600px] w-full mx-auto text-center text-surface/90">
           Manage your entire HR ecosystem from one unified platform
         </h1>
         <p className=" mt-4 font-medium text-lg lg:w-[850px] w-full mx-auto text-center text-faint/90">
@@ -341,7 +368,7 @@ function Home() {
                 <ArrowUpRight className="w-5 h-5 text-gray-400 mt-1 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </div>
 
-              <h3 className="mt-5 text-xl font-bold text-green-dim">
+              <h3 className="mt-5 text-xl font-bold text-surface/90">
                 {mod.title}
               </h3>
               <p className="mt-2 text-faint text-[15px] font-normal leading-relaxed">
@@ -350,7 +377,7 @@ function Home() {
 
               <a
                 href={mod.href}
-                className="mt-5 inline-block font-semibold text-sm text-green-dim border-b-2 border-green-dim/70 pb-0.5 hover:border-green-dim transition-colors"
+                className="mt-5 inline-block font-semibold text-sm text-surface/90 border-b-2 border-green-dim pb-0.5 hover:border-green-dim transition-colors"
               >
                 Learn More
               </a>
@@ -361,7 +388,7 @@ function Home() {
 
       {/* industry support section */}
       <div className="mt-24 ">
-        <h2 className="font-semibold text-3xl lg:w-[750px] w-full mx-auto text-center text-green-dim">
+        <h2 className="font-semibold text-3xl lg:w-[750px] w-full mx-auto text-center text-surface/90">
           Built for every kind of business
         </h2>
         <p className="mt-4 lg:w-[800px] w-full mx-auto font-medium text-lg text-center text-faint/90">
@@ -381,23 +408,22 @@ function Home() {
           {industries.map((item) => (
             <div
               key={item.title}
-              className="industry-card snap-start shrink-0 w-[320px] rounded-lg overflow-hidden bg-[#ede9e3] transition-all duration-900"
+              className="industry-card snap-start shrink-0 w-[320px] rounded-lg overflow-hidden bg-[#f7f5f1] transition-all duration-900"
             >
               {/* visual panel */}
-              <div
-                className={`h-[220px] bg-gradient-to-br ${item.gradient} flex items-center justify-center`}
-              >
-                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
-                  <item.icon
-                    className="w-8 h-8 text-mint-300"
-                    strokeWidth={1.5}
+              <div className={`h-[220px] flex items-center justify-center`}>
+                <div className="w-full h-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+                  <img
+                    src={item.img}
+                    alt={item.alt}
+                    className="h-full w-full object-cover"
                   />
                 </div>
               </div>
 
               {/* body */}
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-green-dim">
+                <h3 className="text-lg font-semibold text-surface/90">
                   {item.title}
                 </h3>
                 <p className="mt-2 text-faint text-sm text-justify leading-relaxed min-h-[80px]">
@@ -430,17 +456,31 @@ function Home() {
           <div className="flex gap-2 shrink-0">
             <button
               onClick={() => scrollByCard(-1)}
-              className="w-10 h-10 cursor-pointer rounded-md bg-[#ede9e3] flex items-center justify-center hover:bg-gray-200 transition-colors"
+              disabled={atStart}
+              className={`w-10 h-10 rounded-md flex items-center justify-center transition-colors ${
+                atStart
+                  ? "bg-[#ede9e3] cursor-not-allowed"
+                  : "bg-green-dim hover:opacity-90 cursor-pointer"
+              }`}
               aria-label="Previous"
             >
-              <ArrowLeft className="w-4 h-4 text-green-dim" />
+              <ArrowLeft
+                className={`w-4 h-4 ${atStart ? "text-green-dim" : "text-white"}`}
+              />
             </button>
             <button
               onClick={() => scrollByCard(1)}
-              className="w-10 h-10 cursor-pointer rounded-md bg-green-dim flex items-center justify-center hover:opacity-90 transition-opacity"
+              disabled={atEnd}
+              className={`w-10 h-10 rounded-md flex items-center justify-center transition-colors ${
+                atEnd
+                  ? "bg-[#ede9e3] cursor-not-allowed"
+                  : "bg-green-dim hover:opacity-90 cursor-pointer"
+              }`}
               aria-label="Next"
             >
-              <ArrowRight className="w-4 h-4 text-white" />
+              <ArrowRight
+                className={`w-4 h-4 ${atEnd ? "text-green-dim" : "text-white"}`}
+              />
             </button>
           </div>
         </div>
@@ -448,6 +488,14 @@ function Home() {
 
       {/* why choose my app */}
       <div className="py-24 px-6 ">
+        <h1 className="font-semibold text-3xl lg:w-[620px] w-full mx-auto text-center text-surface/90">
+          No more re-entering the same data twice
+        </h1>
+        <p className=" mt-4 font-medium text-lg lg:w-[850px] w-full mx-auto text-center text-faint/90">
+          Fix an employee's hours once, and payroll, compliance, and reports
+          update with it — instead of fixing the same mistake in three different
+          places.
+        </p>
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* left: value prop list */}
           <div>
@@ -465,7 +513,7 @@ function Home() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold text-[17px] text-green-dim leading-snug">
+                  <h3 className="font-semibold text-lg text-surface/95 leading-snug">
                     {item.title}
                   </h3>
                   <p className="mt-2 text-faint text-[15px] leading-relaxed">
@@ -490,7 +538,7 @@ function Home() {
                   key={i}
                   d={buildPath(s)}
                   stroke="#a7d4a7"
-                  strokeWidth="0.4"
+                  strokeWidth="0.5"
                   vectorEffect="non-scaling-stroke"
                   strokeLinecap="round"
                 />
@@ -506,14 +554,32 @@ function Home() {
             {spokes.map((s, i) => (
               <div
                 key={i}
-                className="absolute z-10 w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-gradient-to-br from-teal-800 to-green-dim flex items-center justify-center shadow-md"
+                className="absolute z-10 w-20 h-20 bg-[#65aa9c] -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-md overflow-hidden"
                 style={{ left: `${s.x}%`, top: `${s.y}%` }}
               >
-                <s.icon className="w-7 h-7 text-mint-300" strokeWidth={1.5} />
+                <img
+                  src={s.icon}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>
         </div>
+      </div>
+
+      {/* closing section  */}
+      <div className="bg-gradient-to-b from-teal-900 via-teal-800 to-teal-950 py-20 px-6 text-center">
+        <h2 className="text-3xl md:text-5xl font-extrabold text-white">
+          In a rush? Try Sathi now!
+        </h2>
+        <p className="mt-3 text-teal-100 text-base md:text-xl">
+          See Sathi running with your own payroll data — no setup required for
+          the demo.
+        </p>
+        <button className="mt-8 inline-block bg-[#06202B] hover:bg-mint-400 hover:-translate-y-1 cursor-pointer text-white font-semibold text-lg px-10 py-3.5 rounded-lg transition-transform duration-200 shadow-md">
+          Start Free Trial
+        </button>
       </div>
     </div>
   );

@@ -26,10 +26,10 @@ const footerLinks = {
     "Compliance",
   ],
   resources: [
-    "Content Library",
-    "HR Glossary",
+    "Pricing",
+    "Customer",
     "Blog",
-    "Webinar Library",
+    "Resources",
     "Nepal Payroll Guide",
     "Events",
   ],
@@ -55,7 +55,7 @@ const socials = [
 
 function Footer() {
   return (
-    <footer className="bg-teal-900 border-t border-white/10 pt-16 pb-8 px-6">
+    <footer className="bg-[#161a25] border-t border-white/10 pt-16 pb-8 px-6">
       <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-x-8 gap-y-12">
         {/* Platform — spans 2 cols worth of content like Bamboo's does */}
         <div className="col-span-2 grid grid-cols-2 gap-x-8">
@@ -161,9 +161,6 @@ function Footer() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs text-white/60">
             <a href="#" className="hover:text-mint-300 transition-colors">
-              Site Map
-            </a>
-            <a href="#" className="hover:text-mint-300 transition-colors">
               Security
             </a>
             <a href="#" className="hover:text-mint-300 transition-colors">
@@ -172,14 +169,9 @@ function Footer() {
             <a href="#" className="hover:text-mint-300 transition-colors">
               Privacy
             </a>
-            <a href="#" className="hover:text-mint-300 transition-colors">
-              Cookie Preferences
-            </a>
+
             <a href="#" className="hover:text-mint-300 transition-colors">
               FAQ
-            </a>
-            <a href="#" className="hover:text-mint-300 transition-colors">
-              API
             </a>
           </div>
 
