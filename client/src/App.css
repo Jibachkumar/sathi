@@ -57,3 +57,13 @@ html {
 body {
   font-family: var(--font-sans);
 }
+
+@keyframes flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+.flow-line {
+  stroke-dasharray: 4 3;
+  animation: flow 1s linear infinite;
+}

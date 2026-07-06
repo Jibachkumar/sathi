@@ -541,6 +541,8 @@ function Home() {
                   strokeWidth="0.5"
                   vectorEffect="non-scaling-stroke"
                   strokeLinecap="round"
+                  className="flow-line"
+                  style={{ animationDelay: `${i * 0.15}s` }}
                 />
               ))}
             </svg>
@@ -554,8 +556,12 @@ function Home() {
             {spokes.map((s, i) => (
               <div
                 key={i}
-                className="absolute z-10 w-20 h-20 bg-[#65aa9c] -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-md overflow-hidden"
-                style={{ left: `${s.x}%`, top: `${s.y}%` }}
+                className="absolute z-10 w-20 h-20 bg-[#bbd6d1] -translate-x-1/2 -translate-y-1/2 rounded-2xl shadow-md overflow-hidden"
+                style={{
+                  left: `${s.x}%`,
+                  top: `${s.y}%`,
+                  animationDelay: `${0.3 + i * 0.12}s`,
+                }}
               >
                 <img
                   src={s.icon}

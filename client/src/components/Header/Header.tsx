@@ -1,13 +1,17 @@
 import { useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import PlatformMenu from "./NavItemCompoenet";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 type NavItem = {
   name: string;
+  url?: string;
   component?: React.ReactNode;
 };
 
 export default function Header() {
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<NavItem | null>(null);
   const closeTimeout = useRef<number | null>(null);
@@ -32,19 +36,16 @@ export default function Header() {
     },
     {
       name: "Solutions",
-      // component: <SolutionsMenu />,
+      url: "/solutions",
     },
     {
       name: "Pricing",
-      // component: <PricingMenu />,
     },
     {
       name: "Resources",
-      // component: <ResourcesMenu />,
     },
     {
       name: "About",
-      // component: <AboutMenu />,
     },
   ];
 
@@ -56,23 +57,42 @@ export default function Header() {
       <div className="max-w-7xl relative mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo Section */}
         <div>
-          <span className="font-['Syne',sans-serif] text-green text-[20px] lg:text-[21px] font-extrabold tracking-[-0.02em]">
+          <Link
+            to={"/"}
+            className="font-['Syne',sans-serif] text-green text-[20px] lg:text-[21px] font-extrabold tracking-[-0.02em]"
+          >
             Sathi
-          </span>
+          </Link>
         </div>
 
         {/* Desktop Nav Navigation Links */}
         <div className="hidden items-center gap-8 lg:flex">
-          {navItems.map((item) => (
-            <a
-              onMouseEnter={() => openMenu(item)}
-              onMouseLeave={closeMenu}
-              key={item.name}
-              className="text-[16px] cursor-pointer transition-colors duration-200 text-faint font-medium hover:text-green"
-            >
-              {item.name}
-            </a>
-          ))}
+          {navItems.map((item) =>
+            item.url ? (
+              <NavLink
+                key={item.name}
+                to={item.url}
+                onMouseEnter={() => item.component && openMenu(item)}
+                onMouseLeave={closeMenu}
+                className={({ isActive }) =>
+                  `text-[16px] font-medium transition-colors duration-200 ${
+                    isActive ? "text-green" : "text-faint hover:text-green"
+                  }`
+                }
+              >
+                {item.name}
+              </NavLink>
+            ) : (
+              <button
+                key={item.name}
+                onMouseEnter={() => item.component && openMenu(item)}
+                onMouseLeave={closeMenu}
+                className="text-[16px] cursor-pointer font-medium text-faint transition-colors duration-200 hover:text-green"
+              >
+                {item.name}
+              </button>
+            ),
+          )}
         </div>
 
         {/* mega menu */}
@@ -100,7 +120,7 @@ export default function Header() {
           <button className="px-[18px] py-[8px] cursor-pointer rounded-lg text-[14px] bg-transparent border border-green text-black transition-colors duration-200 hover:border-green">
             Sign in
           </button>
-          <button className="px-[24px] py-[8=1px] cursor-pointer rounded-3xl text-[14px] font-medium bg-green text-white border-none transition-opacity duration-200 hover:bg-[#093f34]">
+          <button className="px-[24px] py-[8=1px] cursor-pointer rounded-3xl text-[14px] font-medium bg-green shadow-md text-white border-none transition-opacity duration-200 hover:bg-[#093f34]">
             Get a Demo
           </button>
         </div>
