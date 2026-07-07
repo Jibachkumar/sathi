@@ -40,6 +40,7 @@ export default function Header() {
     },
     {
       name: "Pricing",
+      url: "/pricing",
     },
     {
       name: "Resources",

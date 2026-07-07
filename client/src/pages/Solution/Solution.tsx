@@ -300,7 +300,7 @@ function Solution() {
         </svg>
 
         {/* left part */}
-        <div className="w-full lg:w-[55%] lg:ml-28 lg:-mt-32 text-center lg:text-left">
+        <div className="w-full lg:w-[55%] lg:ml-20 lg:-mt-32 text-center lg:text-left">
           <span className="inline-block text-xl font-semibold tracking-wider text-surface/85 mb-4">
             Solutions for every company size
           </span>
