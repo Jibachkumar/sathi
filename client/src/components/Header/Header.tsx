@@ -44,6 +44,7 @@ export default function Header() {
     },
     {
       name: "Resources",
+      url: "/resources",
     },
     {
       name: "About",

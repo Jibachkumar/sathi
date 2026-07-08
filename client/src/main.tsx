@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home/Home.tsx";
 import Solution from "./pages/Solution/Solution";
 import Pricing from "./pages/pricing/Pricing";
+import Resources from "./pages/Resources/Resources";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/pricing",
         element: <Pricing />,
+      },
+      {
+        path: "/resources",
+        element: <Resources />,
       },
     ],
   },
