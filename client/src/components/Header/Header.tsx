@@ -48,6 +48,7 @@ export default function Header() {
     },
     {
       name: "About",
+      url: "/about",
     },
   ];
 
