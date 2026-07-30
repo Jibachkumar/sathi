@@ -8,6 +8,7 @@ import Solution from "./pages/Solution/Solution";
 import Pricing from "./pages/pricing/Pricing";
 import Resources from "./pages/Resources/Resources";
 import About from "./pages/About/About";
+import ITSoftware from "./pages/industries/ITSoftware";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/industries/it-software",
+        element: <ITSoftware />,
       },
     ],
   },

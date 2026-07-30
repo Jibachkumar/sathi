@@ -636,6 +636,7 @@ function Solution() {
           </p>
           <button className="mt-8 bg-teal-700 hover:bg-teal-800 cursor-pointer text-white font-semibold text-base px-10 py-3.5 rounded-full transition-colors shadow-md">
             Get a Live Demo
+            {/*  Sign up for free */}
           </button>
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { useRef, useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import {
   UserPlus,
   BarChart3,
@@ -16,8 +18,8 @@ import {
   ArrowRight,
   RefreshCw,
   LayoutGrid,
+  ChevronRight,
 } from "lucide-react";
-import { useRef, useState } from "react";
 
 const cards = [
   {
@@ -49,6 +51,195 @@ const cards = [
     icon: Wallet,
   },
 ];
+
+// curve fade in gradually across tablet sizes instead of snapping on.
+// function CurvedCards() {
+//   const n = cards.length;
+
+//   // Tuning knobs for the arc:
+//   const AMPLITUDE = 150;
+//   const MAX_ROTATE = 0;
+//   const PEAK = 0;
+
+//   return (
+//     <div className="relative z-20 flex items-end justify-center lg:gap-6 md:gap-4 md:px-6 gap-2 px-2 flex-wrap">
+//       {cards.map((card, index) => {
+//         const Icon = card.icon;
+
+//         const t = n === 1 ? 0.5 : index / (n - 1);
+//         const skewedT =
+//           t < PEAK ? (t / PEAK) * 0.5 : 0.5 + ((t - PEAK) / (1 - PEAK)) * 0.5;
+
+//         // Values are always computed — but whether they actually get
+//         // applied to `transform` is controlled purely by CSS below,
+//         const arcY = AMPLITUDE * Math.sin(Math.PI * skewedT);
+//         const rotate = (skewedT - 0.5) * MAX_ROTATE;
+
+//         return (
+//           <div
+//             key={index}
+//             style={
+//               {
+//                 "--arc-y": `${arcY}px`,
+//                 "--arc-rotate": `${rotate}deg`,
+//               } as React.CSSProperties
+//             }
+//             className="transform-none xl:[transform:translateY(var(--arc-y))_rotate(var(--arc-rotate))] transition-transform duration-300"
+//           >
+//             <div className="relative w-40 h-36 rounded-3xl bg-green-50 shadow-md hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer">
+//               <div className="flex h-full flex-col items-center justify-center">
+//                 <div className="mb-4 rounded-full bg-green-100 p-3">
+//                   <Icon className="h-8 w-8 text-green-600" />
+//                 </div>
+
+//                 <h3 className="text-center text-gray-700 text-md font-medium px-2 leading-5">
+//                   {card.title}
+//                 </h3>
+//               </div>
+//             </div>
+//           </div>
+//         );
+//       })}
+//     </div>
+//   );
+// }
+
+function CurvedCards() {
+  const AMPLITUDE = 200;
+  const PEAK = 1;
+
+  const DURATION = 30;
+  const REPEAT = 2;
+
+  const CARD_WIDTH = 150; // Approximate width of each card
+  const VIEWPORT = 2200; // Distance the cards travel
+  const STEPS = 250;
+
+  const loopCards = useMemo(
+    () => Array.from({ length: REPEAT }, () => cards).flat(),
+    [],
+  );
+
+  const total = loopCards.length;
+
+  const keyframeCSS = useMemo(() => {
+    const stops: string[] = [];
+
+    for (let i = 0; i <= STEPS; i++) {
+      const p = i / STEPS;
+
+      // Horizontal movement
+      const x = VIEWPORT - p * (VIEWPORT + CARD_WIDTH);
+
+      // Curved path
+      const skewedP =
+        p < PEAK ? (p / PEAK) * 0.5 : 0.5 + ((p - PEAK) / (1 - PEAK)) * 0.5;
+
+      const y = AMPLITUDE * Math.sin(Math.PI * skewedP);
+
+      stops.push(`
+        ${(p * 100).toFixed(2)}% {
+          transform: translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0);
+        }
+      `);
+    }
+
+    return `
+      @keyframes flow-path {
+        ${stops.join("\n")}
+      }
+    `;
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        ${keyframeCSS}
+
+        .flow-track {
+          position: relative;
+        }
+
+        .flow-card {
+          position: absolute;
+          left: -200px;
+          animation: flow-path ${DURATION}s linear infinite;
+
+          will-change: transform;
+          backface-visibility: hidden;
+          transform-style: preserve-3d;
+        }
+
+        .flow-card svg,
+        .flow-card h3 {
+          backface-visibility: hidden;
+          transform: translateZ(0);
+        }
+
+        .flow-track:hover .flow-card {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+      {/* Animated Version */}
+      <div
+        className="flow-track hidden xl:block relative z-20 w-full"
+        style={{
+          height: `${144 + AMPLITUDE * 2 + 20}px`,
+        }}
+      >
+        {loopCards.map((card, index) => {
+          const Icon = card.icon;
+
+          return (
+            <div
+              key={index}
+              className="flow-card"
+              style={{
+                animationDelay: `-${(index / total) * DURATION}s`,
+              }}
+            >
+              <div className="relative -mt-24 rounded-md py-2 ">
+                <div className="flex h-full flex-col items-center justify-center">
+                  <div className="mb-1 rounded-full bg-green-100 p-2">
+                    <Icon className="h-6 w-6 text-green-600" />
+                  </div>
+
+                  <h3 className="text-center hover:translate-y-1 transition-all duration-300 cursor-pointer text-white/90 text-md font-medium leading-5">
+                    {card.title}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile / Tablet */}
+      <div className="xl:hidden relative z-20 flex items-end justify-center lg:gap-6 md:gap-4 md:px-6 gap-2 px-2 flex-wrap">
+        {cards.map((card, index) => {
+          const Icon = card.icon;
+
+          return (
+            <div key={index}>
+              <div className="relative w-40 h-36 rounded-3xl bg-green-50 shadow-md hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer">
+                <div className="flex h-full flex-col items-center justify-center">
+                  <div className="mb-4 rounded-full bg-green-100 p-3">
+                    <Icon className="h-8 w-8 text-green-600" />
+                  </div>
+
+                  <h3 className="text-center text-gray-700 text-md font-medium px-2 leading-5">
+                    {card.title}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
 
 const modules = [
   {
@@ -102,6 +293,7 @@ const industries = [
       "Manage remote and hybrid teams, contractor payments, and performance reviews from one dashboard.",
     img: " https://res.cloudinary.com/dhadohg2h/image/upload/v1783158120/it_and_software_bs6zdk.png",
     alt: "it and software",
+    url: "/industries/it-software",
   },
   {
     title: "Finance & Banking",
@@ -109,6 +301,7 @@ const industries = [
       "Branch-wise reporting, strict SSF/CIT compliance, and role-based access built for regulated teams.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158351/bank_fqj925.png",
     alt: "finance",
+    url: "/industries/finance-banking",
   },
   {
     title: "Construction & Real Estate",
@@ -116,6 +309,7 @@ const industries = [
       "Site-wise attendance and daily-wage payroll for contract labor, with high-turnover workforces in mind.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158406/construction_and_real_state_qr9qu2.avif",
     alt: "contruction",
+    url: "/industries/construction",
   },
   {
     title: "Manufacturing",
@@ -123,6 +317,7 @@ const industries = [
       "Shift management, overtime-heavy payroll, and face recognition attendance built for the factory floor.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158469/manufacturing_weppmz.jpg",
     alt: "manufacturing",
+    url: "/industries/manufacturing",
   },
   {
     title: "Retail & Trading",
@@ -130,13 +325,15 @@ const industries = [
       "Multi-branch operations, commission-based pay, and easy onboarding for part-time and seasonal staff.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158517/retail_and_trading_uyk0rz.png",
     alt: "retail",
+    url: "/industries/retail-trading",
   },
   {
-    title: "Hospitality",
+    title: "/industries/hospitality",
     description:
       "Shift scheduling, service charge distribution, and fast hiring workflows for seasonal demand.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158556/hospitality_jre8ho.jpg",
     alt: "Hospitality",
+    url: "/industries/it-software",
   },
   {
     title: "Healthcare",
@@ -144,6 +341,7 @@ const industries = [
       "24/7 shift rotations, credential tracking, and on-call pay for hospitals and clinics.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158606/healthcare_jiwr4z.jpg",
     alt: "helathcare",
+    url: "/industries/healthcare",
   },
   {
     title: "NGOs & INGOs",
@@ -151,6 +349,7 @@ const industries = [
       "Donor and grant-based reporting, project-wise cost allocation, and mixed expat/local payroll.",
     img: "https://res.cloudinary.com/dhadohg2h/image/upload/v1783158646/NGO_INGOs_taplak.jpg",
     alt: "NGO",
+    url: "/industries/ngo-ingo",
   },
 ];
 
@@ -274,7 +473,7 @@ function Home() {
   return (
     <div>
       {/* info section */}
-      <div className="relative md:h-[700px] md:pb-0 pb-2 overflow-hidden bg-gradient-to-b from-[#4A8C7D] via-[#2e7262] to-[#126351]">
+      <div className="relative lg:h-[700px] md:pb-2 pb-2 overflow-hidden bg-gradient-to-b from-[#4A8C7D] via-[#2e7262] to-[#126351]">
         {/* Single Wave */}
         <svg
           className="absolute -bottom-15 left-0 w-full h-[320px]"
@@ -298,7 +497,7 @@ function Home() {
           />
         </svg>
 
-        <div className="relative z-10 pt-20 text-center text-white">
+        <div className="relative z-10 md:pt-20 pt-10 text-center text-white">
           <h2 className="md:text-6xl text-4xl font-bold">
             The HR Platform That <br /> Powers{" "}
             <span className="text-[#75d4d0]">Great</span> Work
@@ -310,32 +509,13 @@ function Home() {
         </div>
 
         {/* Cards */}
-        <div className="relative z-20 mt-14 flex justify-center md:gap-4 md:px-6 gap-2 px-2 flex-wrap">
-          {cards.map((card, index) => {
-            const Icon = card.icon;
-
-            return (
-              <div
-                key={index}
-                className="relative w-40 h-36 rounded-xl bg-white shadow-md hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 cursor-pointer"
-              >
-                <div className="flex h-full flex-col items-center justify-center">
-                  <div className="mb-4 rounded-full bg-green-100 p-3">
-                    <Icon className="h-8 w-8 text-green-600" />
-                  </div>
-
-                  <h3 className="text-center text-gray-700 text-md font-medium px-2 leading-5">
-                    {card.title}
-                  </h3>
-                </div>
-              </div>
-            );
-          })}
+        <div className="relative z-20 lg:mt-0 md:mt-10 mt-10 md:px-6 gap-2 px-2">
+          <CurvedCards />
         </div>
       </div>
 
       {/* overview section  */}
-      <div className="relative lg:-mt-14 md:mt-0 mt-4">
+      <div className="relative lg:-mt-14 md:mt-5 mt-4">
         <h1 className="font-semibold text-3xl lg:w-[600px] w-full mx-auto text-center text-surface/90">
           Manage your entire HR ecosystem from one unified platform
         </h1>
@@ -430,12 +610,15 @@ function Home() {
                   {item.description}
                 </p>
 
-                <a
-                  href="#"
-                  className="mt-4 inline-block font-semibold text-sm text-green-dim pb-0.5 hover:border-green-dim transition-colors"
-                >
-                  Read more
-                </a>
+                <div className="mt-4">
+                  <Link
+                    to={item.url}
+                    className="group inline-flex items-center gap-1 font-semibold text-sm text-green-dim transition-colors hover:text-[#124b3e]"
+                  >
+                    <span>Read more</span>
+                    <ChevronRight className="w-5 h-5 transition-transform transition-colors group-hover:text-[#124b3e] group-hover:translate-x-1" />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
